@@ -1,8 +1,10 @@
 /* ==========================================================================
    MOCK-DATA.JS
    Dataset de prueba para el dashboard del paciente.
-   Este archivo será reemplazado/enhanced en FASE 3 con generación de dataset por IA.
+   Integrado con dataset de pacientes generado en FASE 3.
    ========================================================================== */
+
+import { pacientesDataset } from '../../data/patients-dataset.js';
 
 /* ==========================================================================
    PATIENT DATA
@@ -215,3 +217,10 @@ export const activityData = [
     icon: '📋'
   }
 ];
+
+/* ==========================================================================
+   PATIENTS DATASET (FASE 3)
+   Dataset de 30 pacientes generado con IA
+   ========================================================================== */
+
+export const patientsDataset = pacientesDataset;
