@@ -2,16 +2,40 @@
    DASHBOARD.JS
    Lógica principal del dashboard del paciente.
    Maneja navegación, renderizado de datos e interacciones.
+   Los datos provienen del paciente actualmente autenticado (auth.js),
+   no de un objeto estático: cada usuario ve únicamente su información.
    ========================================================================== */
 
+import { getCurrentPatient, logout } from './auth.js';
+import { getClinicalData } from './clinical-data.js';
+import { updatePatient, saveClinicalDataFor } from './storage.js';
 import {
-  patientData,
-  appointmentsData,
-  medicalHistoryData,
-  paymentsData,
-  statsData,
-  activityData
-} from './mock-data.js';
+  isValidEmail,
+  isValidPhone,
+  isOnlyLetters,
+  isBlank,
+  restrictToLettersLive,
+  restrictToDigitsLive,
+  formatCurrency,
+  formatDate,
+  getDayOfMonth,
+  getMonthName,
+  getInitials,
+  getMontoPorEspecialidad
+} from './utils.js';
+
+/* ==========================================================================
+   ESTADO DEL DASHBOARD
+   patientData y los datos clínicos se resuelven una sola vez al iniciar,
+   a partir del paciente autenticado (Single Source of Truth).
+   ========================================================================== */
+
+let patientData = null;
+let appointmentsData = [];
+let medicalHistoryData = [];
+let paymentsData = [];
+let statsData = { upcomingAppointments: 0, completedAppointments: 0, totalSpent: 0, averageRating: 0 };
+let activityData = [];
 
 /* ==========================================================================
    INITIALIZATION
@@ -23,6 +47,30 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function initDashboard() {
+  const currentPatient = getCurrentPatient();
+
+  // Adaptar el registro del paciente (campos en español) al modelo que
+  // consume el dashboard (mantiene los mismos nombres usados en el HTML).
+  patientData = {
+    id: currentPatient.id,
+    fullName: currentPatient.nombre,
+    email: currentPatient.email,
+    phone: currentPatient.telefono || '',
+    birthdate: currentPatient.fechaNacimiento || '',
+    address: currentPatient.direccion || '',
+    city: currentPatient.ciudad,
+    occupation: currentPatient.ocupacion || '',
+    avatarInitials: getInitials(currentPatient.nombre),
+    foto: currentPatient.foto || null
+  };
+
+  const clinicalData = getClinicalData(currentPatient);
+  appointmentsData = clinicalData.appointments;
+  medicalHistoryData = clinicalData.history;
+  paymentsData = clinicalData.payments;
+  statsData = clinicalData.stats;
+  activityData = clinicalData.activity;
+
   loadPatientInfo();
   loadStats();
   loadNextAppointment();
@@ -34,6 +82,24 @@ function initDashboard() {
   initTabNavigation();
   initInternalLinks();
   initMobileMenu();
+  initLogout();
+  initButtonActions();
+}
+
+/**
+ * Guarda los datos clínicos actuales (citas, historial, pagos, stats,
+ * actividad) en localStorage para el paciente autenticado. El paciente
+ * de demostración no persiste cambios: siempre conserva su contenido
+ * original de ejemplo.
+ */
+function persistClinicalData() {
+  saveClinicalDataFor(patientData.id, {
+    appointments: appointmentsData,
+    history: medicalHistoryData,
+    payments: paymentsData,
+    stats: statsData,
+    activity: activityData
+  });
 }
 
 /* ==========================================================================
@@ -66,6 +132,30 @@ function loadPatientInfo() {
 
   if (sidebarAvatarInitialsElement) {
     sidebarAvatarInitialsElement.textContent = patientData.avatarInitials;
+  }
+
+  applyAvatarPhoto();
+}
+
+/**
+ * Si el paciente tiene una foto guardada (subida desde "Cambiar foto"),
+ * la muestra como fondo del avatar grande del perfil. Si no tiene foto,
+ * conserva las iniciales que ya definía el diseño original.
+ */
+function applyAvatarPhoto() {
+  const profileAvatar = document.querySelector('.profile-avatar-large');
+  const initialsSpan = document.getElementById('profile-avatar-initials');
+
+  if (!profileAvatar) return;
+
+  if (patientData.foto) {
+    profileAvatar.style.backgroundImage = `url(${patientData.foto})`;
+    profileAvatar.style.backgroundSize = 'cover';
+    profileAvatar.style.backgroundPosition = 'center';
+    if (initialsSpan) initialsSpan.style.visibility = 'hidden';
+  } else {
+    profileAvatar.style.backgroundImage = '';
+    if (initialsSpan) initialsSpan.style.visibility = 'visible';
   }
 }
 
@@ -157,46 +247,82 @@ function loadActivityList() {
 
 /* ==========================================================================
    APPOINTMENTS
-   Carga y muestra todas las citas del paciente
+   Carga y muestra todas las citas del paciente en la tabla del dashboard
    ========================================================================== */
 
-function loadAppointments() {
-  const appointmentsListElement = document.getElementById('appointments-list');
+const APPOINTMENT_STATUS_LABELS = {
+  confirmed: { label: 'Confirmada', badgeClass: 'appointment-badge--confirmed' },
+  pending: { label: 'Pendiente', badgeClass: 'appointment-badge--cancelled' },
+  completed: { label: 'Completada', badgeClass: 'appointment-badge--completed' },
+  cancelled: { label: 'Cancelada', badgeClass: 'appointment-badge--cancelled' }
+};
 
-  if (!appointmentsListElement) {
+function loadAppointments() {
+  const appointmentsTableBody = document.getElementById('appointments-table-body');
+
+  if (!appointmentsTableBody) {
     return;
   }
 
   if (appointmentsData.length === 0) {
-    appointmentsListElement.innerHTML = `
-      <div class="empty-state">
-        <p>No tienes citas agendadas.</p>
-        <button type="button" class="btn btn-primary btn-small">Agendar cita</button>
-      </div>
+    appointmentsTableBody.innerHTML = `
+      <tr>
+        <td colspan="6" style="text-align: center; padding: var(--space-8);">
+          No tienes citas agendadas todavía.
+        </td>
+      </tr>
     `;
     return;
   }
 
-  appointmentsListElement.innerHTML = appointmentsData.map(appointment => `
-    <article class="appointment-card card">
-      <div class="appointment-date">
-        <p class="appointment-day">${getDayOfMonth(appointment.date)}</p>
-        <p class="appointment-month">${getMonthName(appointment.date)}</p>
-      </div>
-      <div class="appointment-info">
-        <p class="appointment-doctor">${appointment.doctorName}</p>
-        <p class="appointment-specialty">${appointment.specialty}</p>
-        <p class="appointment-time">
-          <span aria-hidden="true">🕐</span>
-          ${appointment.time}
-        </p>
-      </div>
-      <div class="appointment-actions">
-        <button type="button" class="btn btn-primary btn-small">Unirse a llamada</button>
-        <button type="button" class="btn btn-ghost btn-small">Reprogramar</button>
-      </div>
-    </article>
-  `).join('');
+  appointmentsTableBody.innerHTML = appointmentsData.map(appointment => {
+    const status = APPOINTMENT_STATUS_LABELS[appointment.status] || APPOINTMENT_STATUS_LABELS.confirmed;
+    const precio = getMontoPorEspecialidad(appointment.specialty) * 4000;
+
+    return `
+      <tr>
+        <td>${appointment.specialty}</td>
+        <td class="hide-mobile">${appointment.doctorName}</td>
+        <td>Videoconsulta</td>
+        <td class="hide-mobile">${formatDate(appointment.date)}</td>
+        <td>${formatCurrency(precio)}</td>
+        <td><span class="appointment-badge ${status.badgeClass}">${status.label}</span></td>
+      </tr>
+    `;
+  }).join('');
+}
+
+/* ==========================================================================
+   NUEVA CITA
+   Agenda una cita nueva a partir del botón "Agendar nueva cita"
+   ========================================================================== */
+
+function handleNewAppointment() {
+  const fecha = window.prompt('Ingresa la fecha de la cita (AAAA-MM-DD):', new Date().toISOString().split('T')[0]);
+  if (!fecha) return;
+
+  const especialidad = window.prompt('Especialidad de la cita:', 'Medicina general');
+  if (!especialidad) return;
+
+  const nuevaCita = {
+    id: `A-${patientData.id}-${Date.now()}`,
+    patientId: String(patientData.id),
+    doctorName: `Especialista en ${especialidad}`,
+    specialty: especialidad,
+    date: fecha,
+    time: '10:00 AM',
+    status: 'confirmed'
+  };
+
+  appointmentsData.push(nuevaCita);
+  statsData.upcomingAppointments = appointmentsData.length;
+  persistClinicalData();
+
+  loadAppointments();
+  loadNextAppointment();
+  loadStats();
+
+  alert('Cita agendada correctamente.');
 }
 
 /* ==========================================================================
@@ -229,12 +355,26 @@ function loadMedicalHistory() {
       <td>${history.doctorName}</td>
       <td>${history.diagnosis}</td>
       <td>
-        <button type="button" class="btn btn-ghost btn-small" aria-label="Ver detalles de consulta del ${formatDate(history.date)}">
+        <button type="button" class="btn btn-ghost btn-small history-details-btn" data-history-id="${history.id}" aria-label="Ver detalles de consulta del ${formatDate(history.date)}">
           Ver detalles
         </button>
       </td>
     </tr>
   `).join('');
+}
+
+function showHistoryDetails(historyId) {
+  const entry = medicalHistoryData.find(h => String(h.id) === String(historyId));
+  if (!entry) return;
+
+  alert(
+    `Consulta del ${formatDate(entry.date)}\n` +
+    `Especialidad: ${entry.specialty}\n` +
+    `Médico: ${entry.doctorName}\n\n` +
+    `Diagnóstico: ${entry.diagnosis}\n\n` +
+    `Recomendaciones: ${entry.recommendations}\n\n` +
+    `Prescripción: ${entry.prescription}`
+  );
 }
 
 /* ==========================================================================
@@ -282,7 +422,7 @@ function loadPayments() {
    Carga los datos del paciente en el formulario de perfil
    ========================================================================== */
 
-function loadProfileForm() {
+function fillProfileForm() {
   const fullNameInput = document.getElementById('profile-full-name');
   const emailInput = document.getElementById('profile-email');
   const phoneInput = document.getElementById('profile-phone');
@@ -290,7 +430,6 @@ function loadProfileForm() {
   const addressInput = document.getElementById('profile-address');
   const cityInput = document.getElementById('profile-city');
   const occupationInput = document.getElementById('profile-occupation');
-  const profileForm = document.getElementById('profile-form');
 
   if (fullNameInput) fullNameInput.value = patientData.fullName;
   if (emailInput) emailInput.value = patientData.email;
@@ -299,6 +438,26 @@ function loadProfileForm() {
   if (addressInput) addressInput.value = patientData.address || '';
   if (cityInput) cityInput.value = patientData.city;
   if (occupationInput) occupationInput.value = patientData.occupation || '';
+
+  // Limpia mensajes de error visibles al restaurar los valores originales
+  document.querySelectorAll('#profile-form .form-error').forEach(el => {
+    el.textContent = '';
+  });
+}
+
+function loadProfileForm() {
+  const fullNameInput = document.getElementById('profile-full-name');
+  const phoneInput = document.getElementById('profile-phone');
+  const cityInput = document.getElementById('profile-city');
+  const profileForm = document.getElementById('profile-form');
+
+  fillProfileForm();
+
+  // Restricción de caracteres en tiempo real: bloquea dígitos en campos de
+  // texto (nombre, ciudad) y letras en el campo de teléfono.
+  if (fullNameInput) restrictToLettersLive(fullNameInput);
+  if (cityInput) restrictToLettersLive(cityInput);
+  if (phoneInput) restrictToDigitsLive(phoneInput);
 
   if (profileForm) {
     profileForm.addEventListener('submit', handleProfileFormSubmit);
@@ -384,13 +543,13 @@ function handleProfileFormSubmit(e) {
   e.preventDefault();
 
   const formData = {
-    fullName: document.getElementById('profile-full-name').value,
-    email: document.getElementById('profile-email').value,
-    phone: document.getElementById('profile-phone').value,
+    fullName: document.getElementById('profile-full-name').value.trim(),
+    email: document.getElementById('profile-email').value.trim(),
+    phone: document.getElementById('profile-phone').value.trim(),
     birthdate: document.getElementById('profile-birthdate').value,
-    address: document.getElementById('profile-address').value,
-    city: document.getElementById('profile-city').value,
-    occupation: document.getElementById('profile-occupation').value
+    address: document.getElementById('profile-address').value.trim(),
+    city: document.getElementById('profile-city').value.trim(),
+    occupation: document.getElementById('profile-occupation').value.trim()
   };
 
   // Validate form
@@ -398,8 +557,18 @@ function handleProfileFormSubmit(e) {
     return;
   }
 
-  // Update patient data (in a real app, this would be sent to a server)
+  // Update in-memory patient data used by the rest of the dashboard
   Object.assign(patientData, formData);
+
+  // Persist the change in localStorage (Single Source of Truth)
+  updatePatient(patientData.id, {
+    nombre: formData.fullName,
+    email: formData.email,
+    telefono: formData.phone,
+    direccion: formData.address,
+    ciudad: formData.city,
+    ocupacion: formData.occupation
+  });
 
   // Update UI
   loadPatientInfo();
@@ -411,23 +580,27 @@ function handleProfileFormSubmit(e) {
 function validateProfileForm(data) {
   const errors = {};
 
-  if (!data.fullName || data.fullName.trim().length < 3) {
+  if (isBlank(data.fullName) || data.fullName.trim().length < 3) {
     errors.fullName = 'El nombre completo es obligatorio';
+  } else if (!isOnlyLetters(data.fullName)) {
+    errors.fullName = 'El nombre solo puede contener letras y espacios';
   }
 
-  if (!data.email || !isValidEmail(data.email)) {
+  if (isBlank(data.email) || !isValidEmail(data.email)) {
     errors.email = 'El correo electrónico no es válido';
   }
 
-  if (!data.phone || !isValidPhone(data.phone)) {
-    errors.phone = 'El número de celular no es válido';
+  if (isBlank(data.phone) || !isValidPhone(data.phone)) {
+    errors.phone = 'El número de celular debe tener 10 dígitos numéricos';
   }
 
   // Birthdate is readonly, so we don't validate it on form submit
   // It's already validated when the account is created
 
-  if (!data.city || data.city.trim().length < 2) {
+  if (isBlank(data.city) || data.city.trim().length < 2) {
     errors.city = 'La ciudad es obligatoria';
+  } else if (!isOnlyLetters(data.city)) {
+    errors.city = 'La ciudad solo puede contener letras y espacios';
   }
 
   // Display errors
@@ -449,52 +622,6 @@ function displayFormErrors(errors) {
       errorElement.textContent = errors[field];
     }
   });
-}
-
-/* ==========================================================================
-   UTILITY FUNCTIONS
-   Funciones de utilidad para formateo y validación
-   ========================================================================== */
-
-function formatCurrency(amount) {
-  return new Intl.NumberFormat('es-CO', {
-    style: 'currency',
-    currency: 'COP',
-    minimumFractionDigits: 0
-  }).format(amount);
-}
-
-function formatDate(dateString) {
-  const date = new Date(dateString);
-  return new Intl.DateTimeFormat('es-CO', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric'
-  }).format(date);
-}
-
-function getDayOfMonth(dateString) {
-  const date = new Date(dateString);
-  return date.getDate();
-}
-
-function getMonthName(dateString) {
-  const date = new Date(dateString);
-  const monthNames = [
-    'Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun',
-    'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'
-  ];
-  return monthNames[date.getMonth()];
-}
-
-function isValidEmail(email) {
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return emailRegex.test(email);
-}
-
-function isValidPhone(phone) {
-  const phoneRegex = /^[0-9]{10}$/;
-  return phoneRegex.test(phone);
 }
 
 /* ==========================================================================
@@ -563,4 +690,115 @@ function toggleMobileMenu(isOpen) {
     mobileMenuToggle.setAttribute('aria-expanded', 'false');
     document.body.style.overflow = '';
   }
+}
+
+/* ==========================================================================
+   LOGOUT
+   Cierra la sesión del paciente actual antes de volver a la landing page
+   ========================================================================== */
+
+function initLogout() {
+  const logoutLink = document.querySelector('a.sidebar-logout[href="../index.html"]');
+
+  if (!logoutLink) return;
+
+  logoutLink.addEventListener('click', () => {
+    logout();
+  });
+}
+
+/* ==========================================================================
+   BUTTON ACTIONS
+   Conecta los botones estáticos del dashboard que aún no tenían
+   funcionalidad: agendar cita, exportar historial, cambiar foto,
+   cancelar edición de perfil y ver detalles de una consulta.
+   ========================================================================== */
+
+function initButtonActions() {
+  // Agendar nueva cita
+  const newAppointmentBtn = document.getElementById('btn-new-appointment');
+  if (newAppointmentBtn) {
+    newAppointmentBtn.addEventListener('click', handleNewAppointment);
+  }
+
+  // Exportar historial médico a un archivo CSV descargable
+  const exportHistoryBtn = document.getElementById('btn-export-history');
+  if (exportHistoryBtn) {
+    exportHistoryBtn.addEventListener('click', handleExportHistory);
+  }
+
+  // Cambiar foto de perfil
+  const changePhotoBtn = document.getElementById('btn-change-photo');
+  const photoInput = document.getElementById('photo-upload-input');
+  if (changePhotoBtn && photoInput) {
+    changePhotoBtn.addEventListener('click', () => photoInput.click());
+    photoInput.addEventListener('change', handlePhotoChange);
+  }
+
+  // Cancelar edición de perfil: restaura los valores guardados
+  const cancelProfileBtn = document.getElementById('btn-cancel-profile');
+  if (cancelProfileBtn) {
+    cancelProfileBtn.addEventListener('click', fillProfileForm);
+  }
+
+  // Ver detalles de una consulta (delegación de eventos sobre la tabla,
+  // ya que las filas se regeneran dinámicamente)
+  const historyTableBody = document.getElementById('history-table-body');
+  if (historyTableBody) {
+    historyTableBody.addEventListener('click', (event) => {
+      const button = event.target.closest('.history-details-btn');
+      if (button) {
+        showHistoryDetails(button.dataset.historyId);
+      }
+    });
+  }
+}
+
+function handleExportHistory() {
+  if (medicalHistoryData.length === 0) {
+    alert('No hay historial médico para exportar.');
+    return;
+  }
+
+  const headers = ['Fecha', 'Especialidad', 'Médico', 'Diagnóstico', 'Recomendaciones', 'Prescripción'];
+  const rows = medicalHistoryData.map(h => [
+    formatDate(h.date),
+    h.specialty,
+    h.doctorName,
+    h.diagnosis,
+    h.recommendations,
+    h.prescription
+  ]);
+
+  const csvContent = [headers, ...rows]
+    .map(row => row.map(field => `"${String(field).replace(/"/g, '""')}"`).join(','))
+    .join('\n');
+
+  const blob = new Blob([`\uFEFF${csvContent}`], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = `historial-medico-${patientData.fullName.replace(/\s+/g, '-').toLowerCase()}.csv`;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
+}
+
+function handlePhotoChange(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  if (!file.type.startsWith('image/')) {
+    alert('Por favor selecciona un archivo de imagen válido.');
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.onload = () => {
+    patientData.foto = reader.result;
+    updatePatient(patientData.id, { foto: reader.result });
+    applyAvatarPhoto();
+  };
+  reader.readAsDataURL(file);
 }

@@ -4,6 +4,8 @@
    Valida restricciones de negocio del dataset
    ========================================================================== */
 
+import { getMontoPorEspecialidad } from './utils.js';
+
 /* ==========================================================================
    CONSTANTES DE VALIDACIÓN
    Listas de valores válidos para campos categóricos
@@ -31,18 +33,6 @@ const FECHA_MAX = '2025-05-01';
 
 const EDAD_MIN = 18;
 const EDAD_MAX = 90;
-
-/* ==========================================================================
-   REGLAS DE TARIFAS
-   Montos según especialidad
-   ========================================================================== */
-
-function getMontoPorEspecialidad(especialidad) {
-  if (especialidad === 'Medicina general') return 25;
-  if (['Pediatría', 'Nutrición', 'Fisioterapia'].includes(especialidad)) return 35;
-  if (['Cardiología', 'Psiquiatría', 'Endocrinología', 'Ginecología', 'Dermatología', 'Psicología'].includes(especialidad)) return 45;
-  return 25;
-}
 
 /* ==========================================================================
    VALIDACIÓN DE IDs

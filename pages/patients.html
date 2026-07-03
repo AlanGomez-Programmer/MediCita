@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="es-CO">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MediCita | Gestión de Pacientes</title>
+  <meta name="description" content="Gestiona los pacientes de MediCita con búsqueda, filtros y operaciones CRUD.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%233FA796'/%3E%3Cpath d='M16 8v16M8 16h16' stroke='%23FAFBFC' stroke-width='3.5' stroke-linecap='round'/%3E%3C/svg%3E">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../assets/css/reset.css">
+  <link rel="stylesheet" href="../assets/css/variables.css">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/layout.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/patients.css">
+  <link rel="stylesheet" href="../assets/css/responsive.css">
+</head>
+<body>
+  <a class="skip-link" href="#patients-main">Saltar al contenido principal</a>
+
+  <!-- HEADER -->
+  <header class="page-header">
+    <div class="container">
+      <div class="page-header-inner">
+        <a href="../index.html" class="navbar-logo">
+          <span class="logo-mark" aria-hidden="true">+</span>
+          <span class="logo-text">MediCita</span>
+        </a>
+        <nav class="page-nav">
+          <a href="../index.html" class="nav-link">Inicio</a>
+          <a href="dashboard.html" class="nav-link">Dashboard</a>
+          <a href="patients.html" class="nav-link nav-link--active">Pacientes</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <main class="page-main" id="patients-main">
+    <div class="container">
+      <!-- PAGE TITLE -->
+      <div class="page-header-section">
+        <h1 class="page-title">Gestión de Pacientes</h1>
+        <p class="page-description">Administra, busca y filtra los pacientes de MediCita</p>
+      </div>
+
+      <!-- STATS CARDS -->
+      <div class="stats-summary">
+        <div class="stat-summary-card">
+          <p class="stat-summary-number" id="total-patients">0</p>
+          <p class="stat-summary-label">Total pacientes</p>
+        </div>
+        <div class="stat-summary-card">
+          <p class="stat-summary-number" id="active-patients">0</p>
+          <p class="stat-summary-label">Pacientes activos</p>
+        </div>
+        <div class="stat-summary-card">
+          <p class="stat-summary-number" id="inactive-patients">0</p>
+          <p class="stat-summary-label">Pacientes inactivos</p>
+        </div>
+      </div>
+
+      <!-- CHART SECTION -->
+      <div class="chart-section card">
+        <h2 class="chart-title">Distribución por Especialidad</h2>
+        <canvas id="specialty-chart" width="800" height="300"></canvas>
+      </div>
+
+      <!-- FILTERS -->
+      <div class="filters-section">
+        <div class="filters-grid">
+          <div class="filter-group">
+            <label for="search-input" class="filter-label">Buscar</label>
+            <input type="text" id="search-input" class="filter-input" placeholder="Nombre o email...">
+          </div>
+          <div class="filter-group">
+            <label for="city-filter" class="filter-label">Ciudad</label>
+            <select id="city-filter" class="filter-select">
+              <option value="">Todas las ciudades</option>
+              <option value="Bogotá">Bogotá</option>
+              <option value="Medellín">Medellín</option>
+              <option value="Cali">Cali</option>
+              <option value="Barranquilla">Barranquilla</option>
+              <option value="Cartagena">Cartagena</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <label for="specialty-filter" class="filter-label">Especialidad</label>
+            <select id="specialty-filter" class="filter-select">
+              <option value="">Todas las especialidades</option>
+              <option value="Medicina general">Medicina general</option>
+              <option value="Pediatría">Pediatría</option>
+              <option value="Psicología">Psicología</option>
+              <option value="Dermatología">Dermatología</option>
+              <option value="Nutrición">Nutrición</option>
+              <option value="Ginecología">Ginecología</option>
+              <option value="Cardiología">Cardiología</option>
+              <option value="Fisioterapia">Fisioterapia</option>
+              <option value="Psiquiatría">Psiquiatría</option>
+              <option value="Endocrinología">Endocrinología</option>
+            </select>
+          </div>
+          <div class="filter-group filter-group--button">
+            <button type="button" id="add-patient-btn" class="btn btn-primary">
+              <span aria-hidden="true">+</span> Agregar paciente
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- PATIENTS GRID -->
+      <div class="patients-section">
+        <div class="patients-header">
+          <h2 class="patients-title">Pacientes</h2>
+          <p class="patients-count" id="filtered-count">Mostrando 0 pacientes</p>
+        </div>
+        <div class="patients-grid" id="patients-grid">
+          <!-- Cards will be rendered dynamically -->
+        </div>
+        <div class="no-results" id="no-results" style="display: none;">
+          <p>No se encontraron pacientes con los filtros aplicados.</p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- MODAL -->
+  <div class="modal" id="patient-modal" aria-hidden="true">
+    <div class="modal-overlay" id="modal-overlay"></div>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="modal-title">Agregar Paciente</h2>
+        <button type="button" class="modal-close" id="modal-close" aria-label="Cerrar modal">×</button>
+      </div>
+      <form class="modal-form" id="patient-form" novalidate>
+        <input type="hidden" id="patient-id">
+        
+        <div class="form-row">
+          <label for="patient-name" class="form-label">Nombre completo *</label>
+          <input type="text" id="patient-name" name="name" class="form-input" required minlength="2" maxlength="60" aria-describedby="patient-name-error">
+          <span class="form-error" id="patient-name-error" role="alert"></span>
+        </div>
+
+        <div class="form-row">
+          <label for="patient-email" class="form-label">Email *</label>
+          <input type="email" id="patient-email" name="email" class="form-input" required aria-describedby="patient-email-error">
+          <span class="form-error" id="patient-email-error" role="alert"></span>
+        </div>
+
+        <div class="form-row">
+          <label for="patient-city" class="form-label">Ciudad *</label>
+          <select id="patient-city" name="city" class="form-select" required aria-describedby="patient-city-error">
+            <option value="">Seleccionar ciudad</option>
+            <option value="Bogotá">Bogotá</option>
+            <option value="Medellín">Medellín</option>
+            <option value="Cali">Cali</option>
+            <option value="Barranquilla">Barranquilla</option>
+            <option value="Cartagena">Cartagena</option>
+          </select>
+          <span class="form-error" id="patient-city-error" role="alert"></span>
+        </div>
+
+        <div class="form-row">
+          <label for="patient-specialty" class="form-label">Especialidad *</label>
+          <select id="patient-specialty" name="specialty" class="form-select" required aria-describedby="patient-specialty-error">
+            <option value="">Seleccionar especialidad</option>
+            <option value="Medicina general">Medicina general</option>
+            <option value="Pediatría">Pediatría</option>
+            <option value="Psicología">Psicología</option>
+            <option value="Dermatología">Dermatología</option>
+            <option value="Nutrición">Nutrición</option>
+            <option value="Ginecología">Ginecología</option>
+            <option value="Cardiología">Cardiología</option>
+            <option value="Fisioterapia">Fisioterapia</option>
+            <option value="Psiquiatría">Psiquiatría</option>
+            <option value="Endocrinología">Endocrinología</option>
+          </select>
+          <span class="form-error" id="patient-specialty-error" role="alert"></span>
+        </div>
+
+        <div class="form-row">
+          <label for="patient-age" class="form-label">Edad *</label>
+          <input type="number" id="patient-age" name="age" class="form-input" required min="18" max="90" aria-describedby="patient-age-error">
+          <span class="form-error" id="patient-age-error" role="alert"></span>
+        </div>
+
+        <div class="form-row">
+          <label for="patient-eps" class="form-label">EPS *</label>
+          <select id="patient-eps" name="eps" class="form-select" required aria-describedby="patient-eps-error">
+            <option value="">Seleccionar EPS</option>
+            <option value="Sura">Sura</option>
+            <option value="Nueva EPS">Nueva EPS</option>
+            <option value="Sanitas">Sanitas</option>
+            <option value="Compensar">Compensar</option>
+            <option value="Particular">Particular</option>
+          </select>
+          <span class="form-error" id="patient-eps-error" role="alert"></span>
+        </div>
+
+        <div class="form-row">
+          <label for="patient-active" class="form-label">Estado</label>
+          <div class="form-checkbox">
+            <input type="checkbox" id="patient-active" name="active" checked>
+            <label for="patient-active">Paciente activo</label>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary">Guardar</button>
+          <button type="button" class="btn btn-ghost" id="modal-cancel">Cancelar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- CONFIRMATION MODAL -->
+  <div class="modal" id="confirm-modal" aria-hidden="true">
+    <div class="modal-overlay" id="confirm-overlay"></div>
+    <div class="modal-content modal-content--small">
+      <div class="modal-header">
+        <h2 class="modal-title">Confirmar eliminación</h2>
+        <button type="button" class="modal-close" id="confirm-close" aria-label="Cerrar modal">×</button>
+      </div>
+      <div class="modal-body">
+        <p>¿Estás seguro de que deseas eliminar este paciente? Esta acción no se puede deshacer.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" id="confirm-delete">Eliminar</button>
+        <button type="button" class="btn btn-ghost" id="confirm-cancel">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  
+  <!-- Patients Manager -->
+  <script type="module" src="../assets/js/patients-manager.js" defer></script>
+</body>
+</html>

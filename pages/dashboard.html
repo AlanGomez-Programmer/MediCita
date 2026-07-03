@@ -80,6 +80,10 @@
             <p class="sidebar-user-email" id="sidebar-user-email">laura.martinez@email.com</p>
           </div>
         </div>
+        <a href="patients.html" class="sidebar-logout">
+          <span class="sidebar-icon" aria-hidden="true">👥</span>
+          <span>Gestión Pacientes</span>
+        </a>
         <a href="../index.html" class="sidebar-logout">
           <span class="sidebar-icon" aria-hidden="true">🚪</span>
           <span>Cerrar sesión</span>
@@ -184,7 +188,7 @@
         <section class="dashboard-tab" id="tab-appointments" aria-labelledby="appointments-title">
           <div class="dashboard-section-header">
             <h2 class="dashboard-section-title" id="appointments-title">Mis citas</h2>
-            <button type="button" class="btn btn-primary btn-small">Agendar nueva cita</button>
+            <button type="button" class="btn btn-primary btn-small" id="btn-new-appointment">Agendar nueva cita</button>
           </div>
           <div class="appointments-table-wrapper">
             <table class="appointments-table" id="appointments-table">
@@ -248,7 +252,7 @@
         <section class="dashboard-tab" id="tab-history" aria-labelledby="history-title">
           <div class="dashboard-section-header">
             <h2 class="dashboard-section-title" id="history-title">Historial médico</h2>
-            <button type="button" class="btn btn-ghost btn-small">Exportar historial</button>
+            <button type="button" class="btn btn-ghost btn-small" id="btn-export-history">Exportar historial</button>
           </div>
           <div class="history-table-wrapper">
             <table class="history-table" id="history-table">
@@ -288,7 +292,8 @@
               <div class="profile-avatar-large">
                 <span id="profile-avatar-initials">LM</span>
               </div>
-              <button type="button" class="btn btn-ghost btn-small">Cambiar foto</button>
+              <button type="button" class="btn btn-ghost btn-small" id="btn-change-photo">Cambiar foto</button>
+              <input type="file" id="photo-upload-input" accept="image/*" hidden>
             </div>
 
             <div class="form-grid">
@@ -337,7 +342,7 @@
 
             <div class="profile-actions">
               <button type="submit" class="btn btn-primary">Guardar cambios</button>
-              <button type="button" class="btn btn-ghost">Cancelar</button>
+              <button type="button" class="btn btn-ghost" id="btn-cancel-profile">Cancelar</button>
             </div>
           </form>
         </section>

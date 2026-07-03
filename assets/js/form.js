@@ -1,18 +1,33 @@
 /* ==========================================================================
    FORM.JS
    Validación del formulario de registro de la landing page. Responsabilidad
-   única: verificar reglas de campo (vacíos, tipo de caracter, formato) y
-   mostrar retroalimentación accesible. No persiste datos (eso es Fase 5).
+   única: verificar reglas de campo (vacíos, tipo de caracter, formato),
+   mostrar retroalimentación accesible y, al ser válido, delegar a auth.js
+   el registro/inicio de sesión y la redirección al dashboard del paciente.
    ========================================================================== */
 
-/* Patrones de validación reutilizables */
-const PATTERNS = {
-  // Solo letras (incluye tildes y ñ) y espacios simples entre palabras
-  onlyLetters: /^[A-Za-zÁÉÍÓÚÑáéíóúñ]+(?:\s[A-Za-zÁÉÍÓÚÑáéíóúñ]+)*$/,
-  // Formato de correo estándar
-  email: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-  // Celular colombiano: exactamente 10 dígitos
-  phone: /^\d{10}$/,
+import { registerOrLogin } from './auth.js';
+import {
+  PATTERNS,
+  isBlank,
+  restrictToLettersLive,
+  restrictToDigitsLive
+} from './utils.js';
+
+/* Mapea las opciones del select (inglés) a las especialidades válidas
+   del dataset (español). Las especialidades sin equivalente directo
+   caen en "Medicina general" para mantener la coherencia del monto. */
+const SPECIALTY_MAP = {
+  general: 'Medicina general',
+  cardiology: 'Cardiología',
+  neurology: 'Medicina general',
+  dermatology: 'Dermatología',
+  orthopedics: 'Fisioterapia',
+  pediatrics: 'Pediatría',
+  gynecology: 'Ginecología',
+  nutrition: 'Nutrición',
+  psychology: 'Psicología',
+  pulmonology: 'Medicina general'
 };
 
 const MESSAGES = {
@@ -23,18 +38,6 @@ const MESSAGES = {
   select: 'Selecciona una especialidad.',
   terms: 'Debes aceptar los términos para continuar.',
 };
-
-/**
- * Filtra caracteres no permitidos mientras el usuario escribe.
- * Esto evita el error antes de que ocurra, en vez de solo detectarlo
- * después en el envío del formulario.
- */
-function restrictLiveInput(input, pattern) {
-  input.addEventListener('input', () => {
-    const cleanValue = [...input.value].filter((char) => pattern.test(char)).join('');
-    input.value = cleanValue;
-  });
-}
 
 /**
  * Muestra u oculta el mensaje de error de un campo específico.
@@ -58,7 +61,7 @@ function setFieldError(input, errorElement, message) {
 function validateField(input, errorElement, { pattern, patternMessage } = {}) {
   const value = input.value.trim();
 
-  if (value === '') {
+  if (isBlank(value)) {
     setFieldError(input, errorElement, MESSAGES.required);
     return false;
   }
@@ -112,8 +115,8 @@ export function initRegisterFormValidation() {
   const termsError = document.getElementById('terms-error');
 
   // Restricción de caracteres en tiempo real: solo letras / solo dígitos
-  restrictLiveInput(fullNameInput, /[A-Za-zÁÉÍÓÚÑáéíóúñ\s]/);
-  restrictLiveInput(phoneInput, /[0-9]/);
+  restrictToLettersLive(fullNameInput);
+  restrictToDigitsLive(phoneInput);
 
   form.addEventListener('submit', (event) => {
     event.preventDefault();
@@ -146,9 +149,23 @@ export function initRegisterFormValidation() {
       return;
     }
 
-    // En esta fase no hay backend ni localStorage todavía (eso es Fase 5).
-    // Por ahora solo confirmamos que la validación pasó correctamente.
-    successMessage.textContent = '¡Registro validado correctamente! Pronto conectaremos esto a tu cuenta real.';
+    const especialidad = SPECIALTY_MAP[specialtySelect.value] || 'Medicina general';
+
+    const { isNewPatient } = registerOrLogin({
+      nombre: fullNameInput.value.trim(),
+      email: emailInput.value.trim(),
+      telefono: phoneInput.value.trim(),
+      especialidad
+    });
+
+    successMessage.textContent = isNewPatient
+      ? '¡Cuenta creada correctamente! Redirigiendo a tu panel...'
+      : '¡Bienvenido(a) de nuevo! Redirigiendo a tu panel...';
+
     form.reset();
+
+    setTimeout(() => {
+      window.location.href = 'pages/dashboard.html';
+    }, 1200);
   });
 }
