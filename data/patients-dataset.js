@@ -110,7 +110,7 @@ const pacientesEjemplo = [
    ========================================================================== */
 
 export const pacientesDataset = [
-  // Registros manuales (few-shot examples)
+  // Registros manuales (few-shot examples) - IDs 1-5
   {
     id: 1,
     nombre: 'Sofía Ramírez',
@@ -191,7 +191,7 @@ export const pacientesDataset = [
     ciudad: 'Medellín',
     especialidad: 'Ginecología',
     edad: 31,
-    fechaUltimaCita: '2024-06-08',
+    fechaUltimaCita: '2024-05-08',
     eps: 'Sura',
     montoUSD: 45,
     activo: true
@@ -223,7 +223,7 @@ export const pacientesDataset = [
   {
     id: 10,
     nombre: 'Felipe Gómez',
-    email: 'felipe.gomez@empresa.co',
+    email: 'felipe.gomez@bancolombia.com.co',
     ciudad: 'Barranquilla',
     especialidad: 'Endocrinología',
     edad: 48,
@@ -236,7 +236,7 @@ export const pacientesDataset = [
     id: 11,
     nombre: 'Daniela Vargas',
     email: 'daniela.vargasm@hotmail.com',
-    ciudad: 'Cartagena',
+    ciudad: 'Bogotá',
     especialidad: 'Medicina general',
     edad: 25,
     fechaUltimaCita: '2024-04-05',
@@ -248,7 +248,7 @@ export const pacientesDataset = [
     id: 12,
     nombre: 'Miguel Ángel Ríos',
     email: 'miguel.rios@gmail.com',
-    ciudad: 'Bogotá',
+    ciudad: 'Medellín',
     especialidad: 'Nutrición',
     edad: 33,
     fechaUltimaCita: '2023-10-17',
@@ -295,11 +295,11 @@ export const pacientesDataset = [
   {
     id: 16,
     nombre: 'Gustavo Adolfo Herrera',
-    email: 'gustavo.herrera@empresa.co',
-    ciudad: 'Cartagena',
+    email: 'gustavo.herrera@ecopetrol.com.co',
+    ciudad: 'Bogotá',
     especialidad: 'Pediatría',
     edad: 42,
-    fechaUltimaCita: '2024-06-12',
+    fechaUltimaCita: '2024-05-12',
     eps: 'Nueva EPS',
     montoUSD: 35,
     activo: true
@@ -355,11 +355,11 @@ export const pacientesDataset = [
   {
     id: 21,
     nombre: 'Natalia Pineda',
-    email: 'natalia.pineda@empresa.co',
+    email: 'natalia.pineda@unal.edu.co',
     ciudad: 'Barranquilla',
     especialidad: 'Medicina general',
     edad: 26,
-    fechaUltimaCita: '2024-06-03',
+    fechaUltimaCita: '2024-05-03',
     eps: 'Nueva EPS',
     montoUSD: 25,
     activo: true
@@ -368,7 +368,7 @@ export const pacientesDataset = [
     id: 22,
     nombre: 'Jorge Eduardo Castro',
     email: 'jorge.castro@gmail.com',
-    ciudad: 'Cartagena',
+    ciudad: 'Medellín',
     especialidad: 'Nutrición',
     edad: 39,
     fechaUltimaCita: '2023-11-28',
@@ -415,11 +415,11 @@ export const pacientesDataset = [
   {
     id: 26,
     nombre: 'Luis Fernando Navarro',
-    email: 'luis.navarro@empresa.co',
+    email: 'luis.navarro@aviatur.com.co',
     ciudad: 'Barranquilla',
     especialidad: 'Pediatría',
     edad: 44,
-    fechaUltimaCita: '2024-06-20',
+    fechaUltimaCita: '2024-05-20',
     eps: 'Nueva EPS',
     montoUSD: 35,
     activo: true
@@ -428,7 +428,7 @@ export const pacientesDataset = [
     id: 27,
     nombre: 'María José Arango',
     email: 'maria.arango@hotmail.com',
-    ciudad: 'Cartagena',
+    ciudad: 'Bogotá',
     especialidad: 'Ginecología',
     edad: 29,
     fechaUltimaCita: '2023-10-05',
@@ -581,4 +581,7 @@ function getMontoPorEspecialidad(especialidad) {
 
 // Ejecutar validación al cargar el módulo
 const validation = validateDataset(pacientesDataset);
-console.log('Validación del dataset:', validation);
+console.log('Validación del dataset (interna):', validation);
+
+// Exportar para validación externa con validator.js
+export { pacientesDataset };
