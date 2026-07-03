@@ -4,8 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MediCita | Dashboard del paciente</title>
+  <meta name="description" content="Gestiona tus citas médicas, historial y pagos en MediCita.">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%233FA796'/%3E%3Cpath d='M16 8v16M8 16h16' stroke='%23FAFBFC' stroke-width='3.5' stroke-linecap='round'/%3E%3C/svg%3E">
 
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="../assets/css/reset.css">
@@ -13,17 +16,335 @@
   <link rel="stylesheet" href="../assets/css/base.css">
   <link rel="stylesheet" href="../assets/css/layout.css">
   <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/dashboard.css">
+  <link rel="stylesheet" href="../assets/css/responsive.css">
 </head>
 <body>
-  <main class="container" style="min-height: 100vh; display: grid; place-items: center; text-align: center; gap: var(--space-5);">
-    <div>
-      <p class="eyebrow">Fase 2 · En construcción</p>
-      <h1 class="section-title">El Dashboard del paciente llega pronto</h1>
-      <p class="section-description" style="margin-inline: auto;">
-        Aquí vivirán tus próximas citas, historial médico, pagos y perfil. Estamos construyendo esta sección paso a paso.
-      </p>
-      <a href="../index.html" class="btn btn-primary btn-large" style="margin-top: var(--space-6);">Volver a la página principal</a>
-    </div>
-  </main>
+  <a class="skip-link" href="#dashboard-main">Saltar al contenido principal</a>
+
+  <div class="mobile-overlay" id="mobile-overlay" aria-hidden="true"></div>
+
+  <div class="dashboard-layout">
+    <!-- SIDEBAR -->
+    <aside class="dashboard-sidebar" id="dashboard-sidebar" aria-label="Navegación del dashboard">
+      <button type="button" class="sidebar-close" id="sidebar-close" aria-label="Cerrar menú de navegación">×</button>
+      <div class="sidebar-header">
+        <a href="../index.html" class="navbar-logo">
+          <span class="logo-mark" aria-hidden="true">+</span>
+          <span class="logo-text">MediCita</span>
+        </a>
+      </div>
+
+      <nav class="sidebar-nav" aria-label="Menú de navegación">
+        <ul class="sidebar-menu">
+          <li>
+            <button type="button" class="sidebar-link sidebar-link--active" data-tab="overview" aria-current="page">
+              <span class="sidebar-icon" aria-hidden="true">📊</span>
+              <span>Resumen</span>
+            </button>
+          </li>
+          <li>
+            <button type="button" class="sidebar-link" data-tab="appointments">
+              <span class="sidebar-icon" aria-hidden="true">📅</span>
+              <span>Próximas citas</span>
+            </button>
+          </li>
+          <li>
+            <button type="button" class="sidebar-link" data-tab="history">
+              <span class="sidebar-icon" aria-hidden="true">📋</span>
+              <span>Historial médico</span>
+            </button>
+          </li>
+          <li>
+            <button type="button" class="sidebar-link" data-tab="payments">
+              <span class="sidebar-icon" aria-hidden="true">💳</span>
+              <span>Pagos</span>
+            </button>
+          </li>
+          <li>
+            <button type="button" class="sidebar-link" data-tab="profile">
+              <span class="sidebar-icon" aria-hidden="true">👤</span>
+              <span>Perfil</span>
+            </button>
+          </li>
+        </ul>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="sidebar-user">
+          <div class="sidebar-avatar" aria-hidden="true">
+            <span id="sidebar-avatar-initials">LM</span>
+          </div>
+          <div class="sidebar-user-info">
+            <p class="sidebar-user-name" id="sidebar-user-name">Laura Martínez</p>
+            <p class="sidebar-user-email" id="sidebar-user-email">laura.martinez@email.com</p>
+          </div>
+        </div>
+        <a href="../index.html" class="sidebar-logout">
+          <span class="sidebar-icon" aria-hidden="true">🚪</span>
+          <span>Cerrar sesión</span>
+        </a>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="dashboard-main" id="dashboard-main">
+      <!-- HEADER -->
+      <header class="dashboard-header">
+        <div class="dashboard-header-inner">
+          <div style="display: flex; align-items: center; gap: var(--space-4);">
+            <button type="button" class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Abrir menú de navegación" aria-expanded="false" aria-controls="dashboard-sidebar">
+              <span class="mobile-menu-toggle-bar"></span>
+              <span class="mobile-menu-toggle-bar"></span>
+              <span class="mobile-menu-toggle-bar"></span>
+            </button>
+            <div>
+              <h1 class="dashboard-title" id="dashboard-title">Resumen</h1>
+              <p class="dashboard-subtitle" id="dashboard-subtitle">Bienvenido a tu panel de control</p>
+            </div>
+          </div>
+          <div class="dashboard-user">
+            <div class="user-info">
+              <p class="user-name" id="user-name">Laura Martínez</p>
+              <p class="user-email" id="user-email">laura.martinez@email.com</p>
+            </div>
+            <div class="user-avatar" aria-hidden="true">
+              <span>LM</span>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- CONTENT AREA -->
+      <div class="dashboard-content">
+        <!-- TAB: OVERVIEW -->
+        <section class="dashboard-tab dashboard-tab--active" id="tab-overview" aria-labelledby="dashboard-title">
+          <div class="stats-grid">
+            <article class="stat-card card">
+              <div class="stat-icon" aria-hidden="true">📅</div>
+              <div>
+                <p class="stat-number" id="stat-appointments">3</p>
+                <p class="stat-label">Citas activas</p>
+                <p class="stat-variation stat-variation--positive">
+                  <span aria-hidden="true">↑</span> 2 vs mes anterior
+                </p>
+              </div>
+            </article>
+
+            <article class="stat-card card">
+              <div class="stat-icon" aria-hidden="true">📊</div>
+              <div>
+                <p class="stat-number" id="stat-adherence">85%</p>
+                <p class="stat-label">Adherencia al tratamiento</p>
+                <div class="stat-progress-bar">
+                  <div class="stat-progress-fill" style="width: 85%;"></div>
+                </div>
+                <p class="stat-variation stat-variation--positive">
+                  <span aria-hidden="true">↑</span> 5% vs mes anterior
+                </p>
+              </div>
+            </article>
+
+            <article class="stat-card card">
+              <div class="stat-icon" aria-hidden="true">💰</div>
+              <div>
+                <p class="stat-number" id="stat-next-payment">$120,000</p>
+                <p class="stat-label">Próximo pago</p>
+                <p class="stat-variation stat-variation--neutral">
+                  15 Jul 2026
+                </p>
+              </div>
+            </article>
+          </div>
+
+          <div class="dashboard-grid">
+            <section class="dashboard-section card">
+              <div class="dashboard-section-header">
+                <h2 class="dashboard-section-title">Próxima cita</h2>
+                <a href="#" class="dashboard-link" data-tab="appointments">Ver todas</a>
+              </div>
+              <div class="next-appointment" id="next-appointment">
+                <!-- Content populated by JS -->
+              </div>
+            </section>
+
+            <section class="dashboard-section card">
+              <div class="dashboard-section-header">
+                <h2 class="dashboard-section-title">Actividad reciente</h2>
+                <a href="#" class="dashboard-link" data-tab="history">Ver historial</a>
+              </div>
+              <ul class="activity-list" id="activity-list">
+                <!-- Content populated by JS -->
+              </ul>
+            </section>
+          </div>
+        </section>
+
+        <!-- TAB: APPOINTMENTS -->
+        <section class="dashboard-tab" id="tab-appointments" aria-labelledby="appointments-title">
+          <div class="dashboard-section-header">
+            <h2 class="dashboard-section-title" id="appointments-title">Mis citas</h2>
+            <button type="button" class="btn btn-primary btn-small">Agendar nueva cita</button>
+          </div>
+          <div class="appointments-table-wrapper">
+            <table class="appointments-table" id="appointments-table">
+              <thead>
+                <tr>
+                  <th>Especialidad</th>
+                  <th class="hide-mobile">Médico</th>
+                  <th>Modalidad</th>
+                  <th class="hide-mobile">Fecha</th>
+                  <th>Precio COP</th>
+                  <th>Estado</th>
+                </tr>
+              </thead>
+              <tbody id="appointments-table-body">
+                <tr>
+                  <td>Cardiología</td>
+                  <td class="hide-mobile">Dr. Andrés Gutiérrez</td>
+                  <td>Videoconsulta</td>
+                  <td class="hide-mobile">15 Jul 2026</td>
+                  <td>$120,000</td>
+                  <td><span class="appointment-badge appointment-badge--confirmed">Confirmada</span></td>
+                </tr>
+                <tr>
+                  <td>Dermatología</td>
+                  <td class="hide-mobile">Dra. Valentina León</td>
+                  <td>Videoconsulta</td>
+                  <td class="hide-mobile">22 Jul 2026</td>
+                  <td>$95,000</td>
+                  <td><span class="appointment-badge appointment-badge--confirmed">Confirmada</span></td>
+                </tr>
+                <tr>
+                  <td>Medicina general</td>
+                  <td class="hide-mobile">Dra. Camila Ramírez</td>
+                  <td>Videoconsulta</td>
+                  <td class="hide-mobile">10 Jul 2026</td>
+                  <td>$85,000</td>
+                  <td><span class="appointment-badge appointment-badge--completed">Completada</span></td>
+                </tr>
+                <tr>
+                  <td>Psicología</td>
+                  <td class="hide-mobile">Dr. Santiago Mejía</td>
+                  <td>Videoconsulta</td>
+                  <td class="hide-mobile">28 Jun 2026</td>
+                  <td>$110,000</td>
+                  <td><span class="appointment-badge appointment-badge--completed">Completada</span></td>
+                </tr>
+                <tr>
+                  <td>Nutrición</td>
+                  <td class="hide-mobile">Dra. María González</td>
+                  <td>Videoconsulta</td>
+                  <td class="hide-mobile">20 Jun 2026</td>
+                  <td>$75,000</td>
+                  <td><span class="appointment-badge appointment-badge--cancelled">Cancelada</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- TAB: HISTORY -->
+        <section class="dashboard-tab" id="tab-history" aria-labelledby="history-title">
+          <div class="dashboard-section-header">
+            <h2 class="dashboard-section-title" id="history-title">Historial médico</h2>
+            <button type="button" class="btn btn-ghost btn-small">Exportar historial</button>
+          </div>
+          <div class="history-table-wrapper">
+            <table class="history-table" id="history-table">
+              <thead>
+                <tr>
+                  <th>Fecha</th>
+                  <th>Especialidad</th>
+                  <th>Médico</th>
+                  <th>Diagnóstico</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="history-table-body">
+                <!-- Content populated by JS -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- TAB: PAYMENTS -->
+        <section class="dashboard-tab" id="tab-payments" aria-labelledby="payments-title">
+          <div class="dashboard-section-header">
+            <h2 class="dashboard-section-title" id="payments-title">Historial de pagos</h2>
+          </div>
+          <div class="payments-list" id="payments-list">
+            <!-- Content populated by JS -->
+          </div>
+        </section>
+
+        <!-- TAB: PROFILE -->
+        <section class="dashboard-tab" id="tab-profile" aria-labelledby="profile-title">
+          <div class="dashboard-section-header">
+            <h2 class="dashboard-section-title" id="profile-title">Mi perfil</h2>
+          </div>
+          <form class="profile-form" id="profile-form" novalidate>
+            <div class="profile-header">
+              <div class="profile-avatar-large">
+                <span id="profile-avatar-initials">LM</span>
+              </div>
+              <button type="button" class="btn btn-ghost btn-small">Cambiar foto</button>
+            </div>
+
+            <div class="form-grid">
+              <div class="form-row">
+                <label for="profile-full-name" class="form-label">Nombre completo</label>
+                <input type="text" id="profile-full-name" name="full-name" class="form-input" required aria-describedby="profile-full-name-error">
+                <span class="form-error" id="profile-full-name-error" role="alert"></span>
+              </div>
+
+              <div class="form-row">
+                <label for="profile-email" class="form-label">Correo electrónico</label>
+                <input type="email" id="profile-email" name="email" class="form-input" required aria-describedby="profile-email-error">
+                <span class="form-error" id="profile-email-error" role="alert"></span>
+              </div>
+
+              <div class="form-row">
+                <label for="profile-phone" class="form-label">Número de celular</label>
+                <input type="tel" id="profile-phone" name="phone" class="form-input" required maxlength="10" aria-describedby="profile-phone-error">
+                <span class="form-error" id="profile-phone-error" role="alert"></span>
+              </div>
+
+              <div class="form-row">
+                <label for="profile-birthdate" class="form-label">Fecha de nacimiento</label>
+                <input type="date" id="profile-birthdate" name="birthdate" class="form-input" required readonly aria-describedby="profile-birthdate-error">
+                <span class="form-error" id="profile-birthdate-error" role="alert"></span>
+              </div>
+
+              <div class="form-row form-row--full">
+                <label for="profile-address" class="form-label">Dirección</label>
+                <input type="text" id="profile-address" name="address" class="form-input" aria-describedby="profile-address-error">
+                <span class="form-error" id="profile-address-error" role="alert"></span>
+              </div>
+
+              <div class="form-row">
+                <label for="profile-city" class="form-label">Ciudad</label>
+                <input type="text" id="profile-city" name="city" class="form-input" required aria-describedby="profile-city-error">
+                <span class="form-error" id="profile-city-error" role="alert"></span>
+              </div>
+
+              <div class="form-row">
+                <label for="profile-occupation" class="form-label">Ocupación</label>
+                <input type="text" id="profile-occupation" name="occupation" class="form-input" aria-describedby="profile-occupation-error">
+                <span class="form-error" id="profile-occupation-error" role="alert"></span>
+              </div>
+            </div>
+
+            <div class="profile-actions">
+              <button type="submit" class="btn btn-primary">Guardar cambios</button>
+              <button type="button" class="btn btn-ghost">Cancelar</button>
+            </div>
+          </form>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <script type="module" src="../assets/js/dashboard.js" defer></script>
 </body>
 </html>
