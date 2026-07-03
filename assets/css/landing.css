@@ -1,0 +1,300 @@
+/* ==========================================================================
+   LANDING.CSS
+   Estilos exclusivos de las secciones de la landing (hero, testimonios,
+   estadísticas, etc.). No se reutiliza en el Dashboard.
+   ========================================================================== */
+
+/* ---------- Hero ---------- */
+.hero {
+  padding-block: var(--space-8) var(--space-9);
+  background: linear-gradient(180deg, var(--color-bg) 0%, var(--color-bg-alt) 100%);
+}
+
+.hero-inner {
+  display: grid;
+  gap: var(--space-7);
+  align-items: center;
+}
+
+.hero-title {
+  font-size: var(--fs-2xl);
+  font-weight: 700;
+  margin-bottom: var(--space-4);
+}
+
+.hero-description {
+  font-size: var(--fs-md);
+  max-width: 480px;
+  margin-bottom: var(--space-6);
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  margin-bottom: var(--space-5);
+}
+
+.hero-microcopy {
+  font-size: var(--fs-xs);
+  color: var(--color-text-muted);
+}
+
+.hero-image {
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+}
+
+/* ---------- Barra de confianza ---------- */
+.trust-bar {
+  padding-block: var(--space-5);
+  background-color: var(--color-accent-soft);
+}
+
+.trust-bar-inner {
+  display: grid;
+  gap: var(--space-4);
+  text-align: center;
+}
+
+.trust-item {
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  color: var(--color-primary);
+}
+
+.trust-icon {
+  color: var(--color-accent);
+  font-weight: 700;
+}
+
+/* ---------- Beneficios ---------- */
+.benefits-grid {
+  display: grid;
+  gap: var(--space-5);
+}
+
+.benefit-icon {
+  font-size: var(--fs-2xl);
+  margin-bottom: var(--space-4);
+}
+
+.benefit-title {
+  font-size: var(--fs-md);
+  margin-bottom: var(--space-2);
+}
+
+.benefit-description {
+  font-size: var(--fs-sm);
+}
+
+/* ---------- Especialidades ---------- */
+.specialties {
+  background-color: var(--color-bg-alt);
+}
+
+.specialties-grid {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.specialty-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  text-align: center;
+  padding: var(--space-5);
+}
+
+.specialty-icon {
+  font-size: var(--fs-xl);
+}
+
+.specialty-name {
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  color: var(--color-primary);
+}
+
+/* ---------- Estadísticas ---------- */
+.stats {
+  background-color: var(--color-primary);
+  text-align: center;
+}
+
+.stats .section-title {
+  margin-bottom: var(--space-7);
+}
+
+.stats-grid {
+  display: grid;
+  gap: var(--space-6);
+}
+
+.stat-number {
+  font-family: var(--font-display);
+  font-size: var(--fs-stat);
+  font-weight: 700;
+  color: var(--color-accent);
+}
+
+.stat-label {
+  color: rgba(250, 251, 252, 0.8);
+  font-size: var(--fs-sm);
+}
+
+/* ---------- Cómo funciona ---------- */
+.steps-list {
+  display: grid;
+  gap: var(--space-6);
+  counter-reset: step;
+}
+
+.step-item {
+  text-align: center;
+}
+
+.step-number {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  margin-inline: auto;
+  margin-bottom: var(--space-4);
+  background-color: var(--color-accent-soft);
+  color: var(--color-accent-dark);
+  font-family: var(--font-display);
+  font-weight: 700;
+  border-radius: var(--radius-full);
+}
+
+.step-title {
+  font-size: var(--fs-md);
+  margin-bottom: var(--space-2);
+}
+
+.step-description {
+  font-size: var(--fs-sm);
+  max-width: 280px;
+  margin-inline: auto;
+}
+
+/* ---------- Médicos destacados ---------- */
+.doctors {
+  background-color: var(--color-bg-alt);
+}
+
+.doctors-grid {
+  display: grid;
+  gap: var(--space-5);
+}
+
+.doctor-card {
+  text-align: center;
+}
+
+.doctor-photo {
+  border-radius: var(--radius-full);
+  margin-inline: auto;
+  margin-bottom: var(--space-4);
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+}
+
+.doctor-name {
+  font-size: var(--fs-md);
+  margin-bottom: var(--space-1);
+}
+
+.doctor-specialty {
+  font-size: var(--fs-sm);
+  color: var(--color-accent-dark);
+  margin-bottom: var(--space-2);
+}
+
+.doctor-rating {
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+/* ---------- Testimonios ---------- */
+.testimonials-grid {
+  display: grid;
+  gap: var(--space-5);
+}
+
+.testimonial-quote {
+  font-size: var(--fs-md);
+  color: var(--color-text);
+  line-height: var(--lh-relaxed);
+  margin-bottom: var(--space-5);
+}
+
+.testimonial-quote::before {
+  content: '\201C';
+  color: var(--color-accent);
+}
+
+.testimonial-quote::after {
+  content: '\201D';
+  color: var(--color-accent);
+}
+
+.testimonial-author {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.testimonial-avatar {
+  border-radius: var(--radius-full);
+  width: 48px;
+  height: 48px;
+  object-fit: cover;
+}
+
+.testimonial-name {
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.testimonial-role {
+  font-size: var(--fs-xs);
+  color: var(--color-text-muted);
+}
+
+/* ---------- Formulario de registro ---------- */
+.register-form {
+  background-color: var(--color-bg-alt);
+}
+
+.register-inner {
+  max-width: 560px;
+}
+
+.form-card {
+  padding: var(--space-7);
+}
+
+/* ---------- CTA final ---------- */
+.final-cta {
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 100%);
+  text-align: center;
+}
+
+.final-cta-title {
+  color: var(--color-white);
+  font-size: var(--fs-xl);
+  margin-bottom: var(--space-3);
+}
+
+.final-cta-description {
+  color: rgba(250, 251, 252, 0.85);
+  max-width: 480px;
+  margin-inline: auto;
+  margin-bottom: var(--space-6);
+}

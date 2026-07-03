@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es-CO">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MediCita | Iniciar sesión</title>
+  <meta name="description" content="Inicia sesión en MediCita para acceder a tu panel de paciente.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%233FA796'/%3E%3Cpath d='M16 8v16M8 16h16' stroke='%23FAFBFC' stroke-width='3.5' stroke-linecap='round'/%3E%3C/svg%3E">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../assets/css/reset.css">
+  <link rel="stylesheet" href="../assets/css/variables.css">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/layout.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/login.css">
+  <link rel="stylesheet" href="../assets/css/responsive.css">
+</head>
+<body>
+  <a class="skip-link" href="#login-main">Saltar al contenido principal</a>
+
+  <header class="page-header">
+    <div class="container">
+      <div class="page-header-inner">
+        <a href="../index.html" class="navbar-logo">
+          <span class="logo-mark" aria-hidden="true">+</span>
+          <span class="logo-text">MediCita</span>
+        </a>
+        <nav class="page-nav">
+          <a href="../index.html" class="nav-link">Inicio</a>
+          <a href="patients.html" class="nav-link">Pacientes</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main class="login-main" id="login-main">
+    <div class="login-card card">
+      <div class="login-header">
+        <p class="eyebrow">Bienvenido de nuevo</p>
+        <h1 class="login-title">Inicia sesión en tu cuenta</h1>
+        <p class="login-description">
+          Ingresa el correo con el que te registraste para acceder a tu panel de paciente.
+        </p>
+      </div>
+
+      <form class="login-form" id="login-form" novalidate>
+        <div class="form-row">
+          <label for="login-email" class="form-label">Correo electrónico</label>
+          <input type="email" id="login-email" name="email" class="form-input" placeholder="tu@correo.com" required autocomplete="email" aria-describedby="login-email-error">
+          <span class="form-error" id="login-email-error" role="alert"></span>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-large btn-full">Ingresar</button>
+        <p class="login-feedback" id="login-feedback" role="status"></p>
+      </form>
+
+      <div class="login-footer">
+        <p>¿Aún no tienes una cuenta?</p>
+        <a href="../index.html#register" class="btn btn-ghost btn-full">Crear mi cuenta</a>
+      </div>
+    </div>
+  </main>
+
+  <script type="module" src="../assets/js/login.js" defer></script>
+</body>
+</html>

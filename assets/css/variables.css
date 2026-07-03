@@ -1,0 +1,79 @@
+/* ==========================================================================
+   VARIABLES.CSS
+   Design tokens centralizados: color, tipografía, espaciado, sombra, radio.
+   Ningún otro archivo debe declarar un valor "mágico" que pertenezca aquí.
+   ========================================================================== */
+
+:root {
+  /* ---------- Color: marca ---------- */
+  --color-primary: #1B4B66;        /* Azul petróleo profundo */
+  --color-primary-light: #4A90A4;  /* Azul cielo suave */
+  --color-primary-dark: #123449;   /* Variante oscura para hover/estados */
+
+  --color-accent: #3FA796;         /* Verde menta cálido (CTA, éxito) */
+  --color-accent-dark: #2F8377;    /* Hover del acento */
+  --color-accent-soft: #E8F5F0;    /* Fondo verde suave */
+
+  --color-highlight: #F4A261;      /* Naranja coral: uso puntual y moderado */
+
+  /* ---------- Color: neutros ---------- */
+  --color-bg: #FAFBFC;             /* Blanco cálido, fondo general */
+  --color-bg-alt: #F1F5F7;         /* Fondo de secciones alternas */
+  --color-white: #FFFFFF;
+
+  --color-text: #2D3B45;           /* Texto principal */
+  --color-text-secondary: #5C6B77; /* Texto secundario */
+  --color-text-muted: #8A96A3;     /* Placeholders, captions */
+
+  --color-border: #E1E7EA;
+
+  /* ---------- Tipografía ---------- */
+  --font-display: 'Poppins', 'Segoe UI', sans-serif;
+  --font-body: 'Inter', 'Segoe UI', sans-serif;
+
+  --fs-xs: 0.8125rem;   /* 13px */
+  --fs-sm: 0.9375rem;   /* 15px */
+  --fs-base: 1rem;      /* 16px */
+  --fs-md: 1.125rem;    /* 18px */
+  --fs-lg: 1.375rem;    /* 22px */
+  --fs-xl: clamp(1.75rem, 1.5rem + 1vw, 2.25rem);
+  --fs-2xl: clamp(2.5rem, 2rem + 2vw, 3.5rem);
+  --fs-stat: clamp(2.5rem, 2rem + 1.5vw, 3rem);
+
+  --lh-tight: 1.2;
+  --lh-normal: 1.5;
+  --lh-relaxed: 1.6;
+
+  /* ---------- Espaciado (escala de 4px) ---------- */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4rem;
+  --space-9: 6rem;
+
+  /* ---------- Layout ---------- */
+  --container-width: 1200px;
+  --container-padding: var(--space-5);
+
+  /* ---------- Bordes y sombras ---------- */
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 24px;
+  --radius-full: 999px;
+
+  --shadow-sm: 0 2px 8px rgba(27, 75, 102, 0.06);
+  --shadow-md: 0 8px 24px rgba(27, 75, 102, 0.10);
+  --shadow-lg: 0 16px 40px rgba(27, 75, 102, 0.14);
+
+  /* ---------- Transición ---------- */
+  --transition-fast: 150ms ease;
+  --transition-base: 250ms ease;
+
+  /* ---------- Z-index ---------- */
+  --z-header: 100;
+  --z-modal: 200;
+}

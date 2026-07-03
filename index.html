@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="es-CO">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MediCita | Citas médicas virtuales en minutos</title>
+  <meta name="description" content="Agenda citas médicas virtuales con más de 200 médicos certificados en Colombia. Atención rápida, confiable y accesible desde donde estés.">
+  <meta property="og:title" content="MediCita | Citas médicas virtuales en minutos">
+  <meta property="og:description" content="Agenda citas médicas virtuales con más de 200 médicos certificados en Colombia.">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%233FA796'/%3E%3Cpath d='M16 8v16M8 16h16' stroke='%23FAFBFC' stroke-width='3.5' stroke-linecap='round'/%3E%3C/svg%3E">
+
+  <!-- Google Fonts: Poppins (titulares) + Inter (cuerpo) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+
+  <!-- Hoja de estilos en cascada: reset -> variables -> base -> layout -> components -> landing -> responsive -->
+  <link rel="stylesheet" href="assets/css/reset.css">
+  <link rel="stylesheet" href="assets/css/variables.css">
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/layout.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+  <link rel="stylesheet" href="assets/css/landing.css">
+  <link rel="stylesheet" href="assets/css/responsive.css">
+</head>
+<body>
+
+  <a class="skip-link" href="#main-content">Saltar al contenido principal</a>
+
+  <header class="site-header">
+    <nav class="navbar" aria-label="Navegación principal">
+      <div class="container navbar-inner">
+        <a href="#hero" class="navbar-logo">
+          <span class="logo-mark" aria-hidden="true">+</span>
+          <span class="logo-text">MediCita</span>
+        </a>
+
+        <button type="button" class="menu-toggle" aria-label="Abrir menú de navegación" aria-expanded="false" aria-controls="navbar-menu">
+          <span class="menu-toggle-bar"></span>
+          <span class="menu-toggle-bar"></span>
+          <span class="menu-toggle-bar"></span>
+        </button>
+
+        <ul id="navbar-menu" class="navbar-menu">
+          <li><a href="#benefits" class="navbar-link">Beneficios</a></li>
+          <li><a href="#specialties" class="navbar-link">Especialidades</a></li>
+          <li><a href="#doctors" class="navbar-link">Médicos</a></li>
+          <li><a href="#testimonials" class="navbar-link">Testimonios</a></li>
+          <li><a href="pages/patients.html" class="navbar-link">Pacientes</a></li>
+          <li><a href="pages/login.html" class="navbar-link">Dashboard</a></li>
+          <li><a href="#register" class="btn btn-primary btn-small">Registrarme</a></li>
+        </ul>
+      </div>
+    </nav>
+  </header>
+
+  <main id="main-content">
+
+    <!-- HERO -->
+    <section id="hero" class="hero" aria-labelledby="hero-title">
+      <div class="container hero-inner">
+        <div class="hero-content">
+          <p class="eyebrow">Telemedicina para profesionales ocupados</p>
+          <h1 id="hero-title" class="hero-title">
+            Tu médico, sin salir de la oficina
+          </h1>
+          <p class="hero-description">
+            Agenda una cita médica virtual en menos de 5 minutos y habla con un profesional certificado hoy mismo. Sin filas, sin salas de espera, sin perder tu día.
+          </p>
+          <div class="hero-actions">
+            <a href="#register" class="btn btn-primary btn-large">Agendar mi primera cita</a>
+            <a href="#how-it-works" class="btn btn-ghost btn-large">Ver cómo funciona</a>
+          </div>
+          <p class="hero-microcopy">Más de 15.000 pacientes ya confían en MediCita</p>
+        </div>
+
+        <div class="hero-media">
+          <img
+            src="https://placehold.co/560x640/1B4B66/FAFBFC?text=Consulta+Virtual"
+            alt="Médica sonriente en una videollamada de consulta virtual con un paciente"
+            class="hero-image"
+            width="560"
+            height="640"
+          >
+        </div>
+      </div>
+    </section>
+
+    <!-- BARRA DE CONFIANZA -->
+    <section id="trust-bar" class="trust-bar" aria-label="Indicadores de confianza">
+      <div class="container trust-bar-inner">
+        <p class="trust-item"><span class="trust-icon" aria-hidden="true">✓</span> Médicos con tarjeta profesional vigente</p>
+        <p class="trust-item"><span class="trust-icon" aria-hidden="true">✓</span> Datos protegidos con cifrado</p>
+        <p class="trust-item"><span class="trust-icon" aria-hidden="true">✓</span> Atención en menos de 24 horas</p>
+        <p class="trust-item"><span class="trust-icon" aria-hidden="true">✓</span> Disponible en toda Colombia</p>
+      </div>
+    </section>
+
+    <!-- BENEFICIOS -->
+    <section id="benefits" class="benefits" aria-labelledby="benefits-title">
+      <div class="container">
+        <div class="section-heading">
+          <p class="eyebrow">¿Por qué MediCita?</p>
+          <h2 id="benefits-title" class="section-title">Diseñado para quienes no tienen tiempo que perder</h2>
+          <p class="section-description">Entendemos que tu agenda no tiene espacio para trámites largos. Por eso simplificamos cada paso del cuidado de tu salud.</p>
+        </div>
+
+        <div class="benefits-grid">
+          <article class="benefit-card card">
+            <div class="benefit-icon" aria-hidden="true">⏱️</div>
+            <h3 class="benefit-title">Citas en minutos</h3>
+            <p class="benefit-description">Agenda y conéctate con un médico el mismo día, sin desplazamientos ni salas de espera.</p>
+          </article>
+
+          <article class="benefit-card card">
+            <div class="benefit-icon" aria-hidden="true">🩺</div>
+            <h3 class="benefit-title">Médicos certificados</h3>
+            <p class="benefit-description">Más de 200 profesionales verificados en distintas especialidades, listos para atenderte.</p>
+          </article>
+
+          <article class="benefit-card card">
+            <div class="benefit-icon" aria-hidden="true">💳</div>
+            <h3 class="benefit-title">Pagos claros</h3>
+            <p class="benefit-description">Consulta el costo antes de agendar. Sin cobros ocultos ni sorpresas en tu factura.</p>
+          </article>
+
+          <article class="benefit-card card">
+            <div class="benefit-icon" aria-hidden="true">📋</div>
+            <h3 class="benefit-title">Historial en un solo lugar</h3>
+            <p class="benefit-description">Consulta tus diagnósticos, fórmulas y recomendaciones anteriores cuando los necesites.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ESPECIALIDADES -->
+    <section id="specialties" class="specialties" aria-labelledby="specialties-title">
+      <div class="container">
+        <div class="section-heading">
+          <p class="eyebrow">Especialidades</p>
+          <h2 id="specialties-title" class="section-title">Encuentra al especialista que necesitas</h2>
+          <p class="section-description">Desde una consulta general hasta atención especializada, todo disponible desde tu pantalla.</p>
+        </div>
+
+        <ul class="specialties-grid">
+          <li class="specialty-card card">
+            <span class="specialty-icon" aria-hidden="true">🩹</span>
+            <span class="specialty-name">Medicina general</span>
+          </li>
+          <li class="specialty-card card">
+            <span class="specialty-icon" aria-hidden="true">❤️</span>
+            <span class="specialty-name">Cardiología</span>
+          </li>
+          <li class="specialty-card card">
+            <span class="specialty-icon" aria-hidden="true">🧠</span>
+            <span class="specialty-name">Neurología</span>
+          </li>
+          <li class="specialty-card card">
+            <span class="specialty-icon" aria-hidden="true">🧴</span>
+            <span class="specialty-name">Dermatología</span>
+          </li>
+          <li class="specialty-card card">
+            <span class="specialty-icon" aria-hidden="true">🦴</span>
+            <span class="specialty-name">Ortopedia</span>
+          </li>
+          <li class="specialty-card card">
+            <span class="specialty-icon" aria-hidden="true">🧒</span>
+            <span class="specialty-name">Pediatría</span>
+          </li>
+          <li class="specialty-card card">
+            <span class="specialty-icon" aria-hidden="true">🌸</span>
+            <span class="specialty-name">Ginecología</span>
+          </li>
+          <li class="specialty-card card">
+            <span class="specialty-icon" aria-hidden="true">🍽️</span>
+            <span class="specialty-name">Nutrición</span>
+          </li>
+          <li class="specialty-card card">
+            <span class="specialty-icon" aria-hidden="true">💬</span>
+            <span class="specialty-name">Psicología</span>
+          </li>
+          <li class="specialty-card card">
+            <span class="specialty-icon" aria-hidden="true">🫁</span>
+            <span class="specialty-name">Neumología</span>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ESTADÍSTICAS -->
+    <section id="stats" class="stats" aria-labelledby="stats-title">
+      <div class="container">
+        <h2 id="stats-title" class="section-title section-title-inverse">La confianza, en números</h2>
+
+        <div class="stats-grid">
+          <div class="stat-item">
+            <p class="stat-number" data-target="15000">0</p>
+            <p class="stat-label">Pacientes atendidos</p>
+          </div>
+          <div class="stat-item">
+            <p class="stat-number" data-target="97" data-suffix="%">0</p>
+            <p class="stat-label">Satisfacción de pacientes</p>
+          </div>
+          <div class="stat-item">
+            <p class="stat-number" data-target="200" data-suffix="+">0</p>
+            <p class="stat-label">Médicos certificados</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CÓMO FUNCIONA -->
+    <section id="how-it-works" class="how-it-works" aria-labelledby="how-title">
+      <div class="container">
+        <div class="section-heading">
+          <p class="eyebrow">Proceso</p>
+          <h2 id="how-title" class="section-title">Así de simple es agendar tu cita</h2>
+        </div>
+
+        <ol class="steps-list">
+          <li class="step-item">
+            <span class="step-number" aria-hidden="true">1</span>
+            <h3 class="step-title">Regístrate</h3>
+            <p class="step-description">Crea tu cuenta con tus datos básicos en menos de dos minutos.</p>
+          </li>
+          <li class="step-item">
+            <span class="step-number" aria-hidden="true">2</span>
+            <h3 class="step-title">Elige tu especialista</h3>
+            <p class="step-description">Filtra por especialidad, disponibilidad y elige el horario que te convenga.</p>
+          </li>
+          <li class="step-item">
+            <span class="step-number" aria-hidden="true">3</span>
+            <h3 class="step-title">Conéctate</h3>
+            <p class="step-description">Ingresa a tu videoconsulta desde el computador o el celular, sin instalar nada.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- MÉDICOS DESTACADOS -->
+    <section id="doctors" class="doctors" aria-labelledby="doctors-title">
+      <div class="container">
+        <div class="section-heading">
+          <p class="eyebrow">Nuestro equipo</p>
+          <h2 id="doctors-title" class="section-title">Médicos destacados</h2>
+          <p class="section-description">Profesionales verificados con años de experiencia en atención virtual.</p>
+        </div>
+
+        <div class="doctors-grid">
+          <article class="doctor-card card">
+            <img src="https://placehold.co/240x240/4A90A4/FAFBFC?text=Dra.+Ramírez" alt="Foto de la Dra. Camila Ramírez" class="doctor-photo" width="240" height="240">
+            <h3 class="doctor-name">Dra. Camila Ramírez</h3>
+            <p class="doctor-specialty">Medicina general</p>
+            <p class="doctor-rating" aria-label="Calificación 4.9 de 5">⭐ 4.9</p>
+          </article>
+
+          <article class="doctor-card card">
+            <img src="https://placehold.co/240x240/4A90A4/FAFBFC?text=Dr.+Guti%C3%A9rrez" alt="Foto del Dr. Andrés Gutiérrez" class="doctor-photo" width="240" height="240">
+            <h3 class="doctor-name">Dr. Andrés Gutiérrez</h3>
+            <p class="doctor-specialty">Cardiología</p>
+            <p class="doctor-rating" aria-label="Calificación 4.8 de 5">⭐ 4.8</p>
+          </article>
+
+          <article class="doctor-card card">
+            <img src="https://placehold.co/240x240/4A90A4/FAFBFC?text=Dra.+Le%C3%B3n" alt="Foto de la Dra. Valentina León" class="doctor-photo" width="240" height="240">
+            <h3 class="doctor-name">Dra. Valentina León</h3>
+            <p class="doctor-specialty">Dermatología</p>
+            <p class="doctor-rating" aria-label="Calificación 5.0 de 5">⭐ 5.0</p>
+          </article>
+
+          <article class="doctor-card card">
+            <img src="https://placehold.co/240x240/4A90A4/FAFBFC?text=Dr.+Ospina" alt="Foto del Dr. Felipe Ospina" class="doctor-photo" width="240" height="240">
+            <h3 class="doctor-name">Dr. Felipe Ospina</h3>
+            <p class="doctor-specialty">Ortopedia</p>
+            <p class="doctor-rating" aria-label="Calificación 4.7 de 5">⭐ 4.7</p>
+          </article>
+
+          <article class="doctor-card card">
+            <img src="https://placehold.co/240x240/4A90A4/FAFBFC?text=Dra.+Cort%C3%A9s" alt="Foto de la Dra. Isabella Cortés" class="doctor-photo" width="240" height="240">
+            <h3 class="doctor-name">Dra. Isabella Cortés</h3>
+            <p class="doctor-specialty">Ginecología</p>
+            <p class="doctor-rating" aria-label="Calificación 4.9 de 5">⭐ 4.9</p>
+          </article>
+
+          <article class="doctor-card card">
+            <img src="https://placehold.co/240x240/4A90A4/FAFBFC?text=Dr.+Mej%C3%ADa" alt="Foto del Dr. Santiago Mejía" class="doctor-photo" width="240" height="240">
+            <h3 class="doctor-name">Dr. Santiago Mejía</h3>
+            <p class="doctor-specialty">Psicología</p>
+            <p class="doctor-rating" aria-label="Calificación 4.8 de 5">⭐ 4.8</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- TESTIMONIOS -->
+    <section id="testimonials" class="testimonials" aria-labelledby="testimonials-title">
+      <div class="container">
+        <div class="section-heading">
+          <p class="eyebrow">Testimonios</p>
+          <h2 id="testimonials-title" class="section-title">Lo que dicen nuestros pacientes</h2>
+        </div>
+
+        <div class="testimonials-grid">
+          <figure class="testimonial-card card">
+            <blockquote class="testimonial-quote">
+              Pude hacer mi consulta entre reuniones, sin salir de la oficina. El médico fue muy claro y me envió la fórmula al momento.
+            </blockquote>
+            <figcaption class="testimonial-author">
+              <img src="https://placehold.co/56x56/3FA796/FAFBFC?text=JP" alt="" class="testimonial-avatar" width="56" height="56">
+              <div>
+                <p class="testimonial-name">Juliana Pardo</p>
+                <p class="testimonial-role">Abogada, Bogotá</p>
+              </div>
+            </figcaption>
+          </figure>
+
+          <figure class="testimonial-card card">
+            <blockquote class="testimonial-quote">
+              Llevaba días con dolor de espalda y no tenía tiempo de ir a una EPS. En 20 minutos ya tenía cita con un ortopedista.
+            </blockquote>
+            <figcaption class="testimonial-author">
+              <img src="https://placehold.co/56x56/3FA796/FAFBFC?text=CR" alt="" class="testimonial-avatar" width="56" height="56">
+              <div>
+                <p class="testimonial-name">Carlos Rojas</p>
+                <p class="testimonial-role">Ingeniero, Medellín</p>
+              </div>
+            </figcaption>
+          </figure>
+
+          <figure class="testimonial-card card">
+            <blockquote class="testimonial-quote">
+              La plataforma es muy fácil de usar y el seguimiento con la nutricionista ha sido constante. Se nota que sí hay interés en el paciente.
+            </blockquote>
+            <figcaption class="testimonial-author">
+              <img src="https://placehold.co/56x56/3FA796/FAFBFC?text=MG" alt="" class="testimonial-avatar" width="56" height="56">
+              <div>
+                <p class="testimonial-name">Mónica Guerrero</p>
+                <p class="testimonial-role">Diseñadora, Cali</p>
+              </div>
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- FORMULARIO DE REGISTRO -->
+    <section id="register" class="register-form" aria-labelledby="register-title">
+      <div class="container register-inner">
+        <div class="section-heading">
+          <p class="eyebrow">Crea tu cuenta</p>
+          <h2 id="register-title" class="section-title">Empieza a cuidar tu salud hoy</h2>
+          <p class="section-description">Regístrate y agenda tu primera cita en minutos. Es gratis crear tu cuenta.</p>
+        </div>
+
+        <form class="form-card card" id="register-form" novalidate>
+          <div class="form-row">
+            <label for="full-name" class="form-label">Nombre completo</label>
+            <input type="text" id="full-name" name="full-name" class="form-input" placeholder="Ej. Laura Martínez" required autocomplete="name" aria-describedby="full-name-error">
+            <span class="form-error" id="full-name-error" role="alert"></span>
+          </div>
+
+          <div class="form-row">
+            <label for="email" class="form-label">Correo electrónico</label>
+            <input type="email" id="email" name="email" class="form-input" placeholder="tu@correo.com" required autocomplete="email" aria-describedby="email-error">
+            <span class="form-error" id="email-error" role="alert"></span>
+          </div>
+
+          <div class="form-row">
+            <label for="phone" class="form-label">Número de celular</label>
+            <input type="tel" id="phone" name="phone" class="form-input" placeholder="300 123 4567" required autocomplete="tel" inputmode="numeric" maxlength="10" aria-describedby="phone-error">
+            <span class="form-error" id="phone-error" role="alert"></span>
+          </div>
+
+          <div class="form-row">
+            <label for="specialty-interest" class="form-label">Especialidad de interés</label>
+            <select id="specialty-interest" name="specialty-interest" class="form-input" required aria-describedby="specialty-interest-error">
+              <option value="" selected disabled>Selecciona una especialidad</option>
+              <option value="general">Medicina general</option>
+              <option value="cardiology">Cardiología</option>
+              <option value="neurology">Neurología</option>
+              <option value="dermatology">Dermatología</option>
+              <option value="orthopedics">Ortopedia</option>
+              <option value="pediatrics">Pediatría</option>
+              <option value="gynecology">Ginecología</option>
+              <option value="nutrition">Nutrición</option>
+              <option value="psychology">Psicología</option>
+              <option value="pulmonology">Neumología</option>
+            </select>
+            <span class="form-error" id="specialty-interest-error" role="alert"></span>
+          </div>
+
+          <div class="form-row form-row-checkbox">
+            <input type="checkbox" id="terms" name="terms" required aria-describedby="terms-error">
+            <label for="terms">Acepto los términos y condiciones y la política de tratamiento de datos</label>
+          </div>
+          <span class="form-error" id="terms-error" role="alert"></span>
+
+          <button type="submit" class="btn btn-primary btn-large btn-full">Crear mi cuenta</button>
+          <p class="form-success" id="form-success" role="status"></p>
+        </form>
+      </div>
+    </section>
+
+    <!-- CTA FINAL -->
+    <section id="final-cta" class="final-cta">
+      <div class="container final-cta-inner">
+        <h2 class="final-cta-title">Tu salud no debería esperar</h2>
+        <p class="final-cta-description">Únete a los más de 15.000 pacientes que ya cuidan su salud con MediCita.</p>
+        <a href="#register" class="btn btn-accent btn-large">Registrarme ahora</a>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <a href="#hero" class="navbar-logo">
+          <span class="logo-mark" aria-hidden="true">+</span>
+          <span class="logo-text">MediCita</span>
+        </a>
+        <p class="footer-tagline">Telemedicina accesible para todos los colombianos.</p>
+      </div>
+
+      <nav class="footer-nav" aria-label="Enlaces del pie de página">
+        <div class="footer-column">
+          <h3 class="footer-heading">Plataforma</h3>
+          <ul>
+            <li><a href="#benefits">Beneficios</a></li>
+            <li><a href="#specialties">Especialidades</a></li>
+            <li><a href="#doctors">Médicos</a></li>
+            <li><a href="pages/login.html">Iniciar sesión</a></li>
+            <li><a href="pages/patients.html">Gestión de Pacientes</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-column">
+          <h3 class="footer-heading">Compañía</h3>
+          <ul>
+            <li><a href="#">Sobre nosotros</a></li>
+            <li><a href="#">Trabaja con nosotros</a></li>
+            <li><a href="#">Contacto</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-column">
+          <h3 class="footer-heading">Legal</h3>
+          <ul>
+            <li><a href="#">Términos y condiciones</a></li>
+            <li><a href="#">Política de privacidad</a></li>
+            <li><a href="#">Tratamiento de datos</a></li>
+          </ul>
+        </div>
+      </nav>
+
+      <div class="footer-social" aria-label="Redes sociales">
+        <a href="#" aria-label="MediCita en Facebook">Facebook</a>
+        <a href="#" aria-label="MediCita en Instagram">Instagram</a>
+        <a href="#" aria-label="MediCita en LinkedIn">LinkedIn</a>
+      </div>
+    </div>
+
+    <div class="container footer-bottom">
+      <p>&copy; 2026 MediCita. Todos los derechos reservados. Bogotá, Colombia.</p>
+    </div>
+  </footer>
+
+  <script type="module" src="assets/js/app.js" defer></script>
+</body>
+</html>

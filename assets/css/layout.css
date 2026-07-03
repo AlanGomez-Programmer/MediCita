@@ -1,0 +1,171 @@
+/* ==========================================================================
+   LAYOUT.CSS
+   Contenedores, sistema de secciones y estructura de navbar/footer.
+   Reutilizable en el Dashboard (Fase 2). No define color de marca ni copy.
+   ========================================================================== */
+
+.container {
+  width: 100%;
+  max-width: var(--container-width);
+  margin-inline: auto;
+  padding-inline: var(--container-padding);
+}
+
+section {
+  padding-block: var(--space-8);
+}
+
+.section-heading {
+  max-width: 640px;
+  margin-inline: auto;
+  text-align: center;
+  margin-bottom: var(--space-7);
+}
+
+/* ---------- Header / Navbar ---------- */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-header);
+  background-color: rgba(250, 251, 252, 0.92);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.navbar-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 72px;
+}
+
+.navbar-logo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--fs-md);
+  color: var(--color-primary);
+}
+
+.logo-mark {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  background-color: var(--color-accent);
+  color: var(--color-white);
+  border-radius: var(--radius-sm);
+  font-size: var(--fs-md);
+  line-height: 1;
+}
+
+.menu-toggle {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 40px;
+  height: 40px;
+}
+
+.menu-toggle-bar {
+  width: 22px;
+  height: 2px;
+  background-color: var(--color-primary);
+  transition: transform var(--transition-fast), opacity var(--transition-fast);
+}
+
+.navbar-menu {
+  display: flex;
+  align-items: center;
+  gap: var(--space-7);
+}
+
+.navbar-link {
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  color: var(--color-text);
+  padding-block: var(--space-2);
+}
+
+.navbar-link:hover {
+  color: var(--color-primary);
+}
+
+.navbar-menu .btn {
+  margin-left: var(--space-3);
+}
+
+/* ---------- Footer ---------- */
+.site-footer {
+  background-color: var(--color-primary);
+  color: var(--color-bg-alt);
+  padding-block: var(--space-8) var(--space-5);
+}
+
+.footer-inner {
+  display: grid;
+  gap: var(--space-7);
+  padding-bottom: var(--space-7);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.footer-tagline {
+  color: rgba(250, 251, 252, 0.7);
+  margin-top: var(--space-3);
+  max-width: 320px;
+}
+
+.footer-brand .logo-text,
+.footer-brand .navbar-logo {
+  color: var(--color-white);
+}
+
+.footer-nav {
+  display: grid;
+  gap: var(--space-6);
+}
+
+.footer-heading {
+  font-family: var(--font-display);
+  font-size: var(--fs-sm);
+  color: var(--color-white);
+  margin-bottom: var(--space-3);
+}
+
+.footer-column ul {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.footer-column a {
+  color: rgba(250, 251, 252, 0.7);
+  font-size: var(--fs-sm);
+}
+
+.footer-column a:hover {
+  color: var(--color-white);
+}
+
+.footer-social {
+  display: flex;
+  gap: var(--space-5);
+}
+
+.footer-social a {
+  color: rgba(250, 251, 252, 0.7);
+  font-size: var(--fs-sm);
+}
+
+.footer-social a:hover {
+  color: var(--color-white);
+}
+
+.footer-bottom {
+  padding-top: var(--space-5);
+  text-align: center;
+  font-size: var(--fs-xs);
+  color: rgba(250, 251, 252, 0.6);
+}

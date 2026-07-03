@@ -1,0 +1,140 @@
+/* ==========================================================================
+   RESPONSIVE.CSS
+   Media queries centralizadas. Enfoque mobile-first: los archivos anteriores
+   definen el estado base (móvil) y aquí solo agregamos lo que cambia en
+   pantallas más grandes. Va al final de la cascada para poder sobrescribir.
+   ========================================================================== */
+
+/* ---------- Navbar: menú móvil (por defecto, oculto hasta breakpoint md) ---------- */
+.navbar-menu {
+  position: fixed;
+  top: 72px;
+  left: 0;
+  right: 0;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-4);
+  background-color: var(--color-white);
+  padding: var(--space-5);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-8px);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity var(--transition-base), transform var(--transition-base), visibility var(--transition-base);
+}
+
+.navbar-menu.is-open {
+  transform: translateY(0);
+  opacity: 1;
+  visibility: visible;
+}
+
+.navbar-menu .navbar-link,
+.navbar-menu .btn {
+  width: 100%;
+  margin-left: 0;
+}
+
+/* Animación de ícono hamburguesa -> X cuando el menú está abierto */
+.menu-toggle[aria-expanded="true"] .menu-toggle-bar:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.menu-toggle[aria-expanded="true"] .menu-toggle-bar:nth-child(2) {
+  opacity: 0;
+}
+
+.menu-toggle[aria-expanded="true"] .menu-toggle-bar:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+/* ---------- Breakpoint: tablet pequeña (>= 600px) ---------- */
+@media (min-width: 37.5em) {
+  .benefits-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .specialties-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .doctors-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .trust-bar-inner {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .footer-nav {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* ---------- Breakpoint: tablet / desktop pequeño (>= 768px) ---------- */
+@media (min-width: 48em) {
+  .menu-toggle {
+    display: none;
+  }
+
+  .navbar-menu {
+    position: static;
+    flex-direction: row;
+    align-items: center;
+    background: none;
+    box-shadow: none;
+    padding: 0;
+    transform: none;
+    opacity: 1;
+    visibility: visible;
+    width: auto;
+  }
+
+  .navbar-menu .navbar-link,
+  .navbar-menu .btn {
+    width: auto;
+  }
+
+  .hero-inner {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .steps-list {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .testimonials-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .footer-inner {
+    grid-template-columns: 1fr 2fr;
+  }
+}
+
+/* ---------- Breakpoint: desktop (>= 1024px) ---------- */
+@media (min-width: 64em) {
+  .benefits-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .specialties-grid {
+    grid-template-columns: repeat(5, 1fr);
+  }
+
+  .doctors-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .testimonials-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .trust-bar-inner {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
